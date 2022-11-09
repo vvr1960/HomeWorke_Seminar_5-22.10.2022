@@ -1,0 +1,52 @@
+# Задача 4.	Реализуйте RLE алгоритм: реализуйте модуль сжатия и восстановления данных.
+#           Входные и выходные данные хранятся в отдельных текстовых файлах.
+
+                 # КОДИРОВАНИЕ ТЕКСТА
+
+    # Вводим текст для кодирования и загружаем кго в текстовый файл
+with open('text_before.txt', 'w', encoding='UTF-8') as data:
+    data.write(input('Введите текст:        '))
+with open('text_before.txt', 'r') as data:
+    txt_before = data.readline()
+
+    # Блок кодирования исходного текста 
+txt_after = ''
+prev_symbol = ''
+count = 1
+for symbol in txt_before:
+        if symbol != prev_symbol:
+            if prev_symbol:
+                txt_after += str(count) + prev_symbol
+            count = 1
+            prev_symbol = symbol
+        else:
+            count += 1
+else:
+    txt_after += str(count) + prev_symbol
+
+    # Загрузка закодированного текста в тестовый файл и вывод на крсоль
+with open('text_after.txt', 'w', encoding='UTF-8') as data:
+    data.write(f'{txt_after}')
+print(f'Текст после сжатия:   {txt_after}')
+
+            # ДЕКОДИРОВАНИЕ ТЕКСТА
+
+    # Выгружаем ранее закодированный текст из текстового файла
+with open('text_after.txt', 'r') as data:
+    txt_coded = data.readline()
+
+    # Блок декодирования закодированного текста
+txt_decoded = ''
+symbol_quantity = ''
+for i in range(len(txt_coded)):
+    if txt_coded[i].isdigit():
+        symbol_quantity += txt_coded[i]
+    else:
+        txt_decoded += txt_coded[i] * int(symbol_quantity)
+        symbol_quantity = ''
+
+    # Загрузка декодированного текста в созданный 
+    # для этого текстовый файл и выводего на консоль
+with open('file_decode.txt', 'w') as file:
+     file.write(txt_decoded)
+print(f'Декодированный текст: {txt_decoded}')
